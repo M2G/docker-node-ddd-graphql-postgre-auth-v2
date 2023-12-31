@@ -1,0 +1,108 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+scalar Date
+
+type User {
+  id: Int
+  email: String
+  password: String
+  first_name: String
+  last_name: String
+  username: String
+  created_at: Date
+  modified_at: Date
+  reset_password_token: String
+  reset_password_expires: Date
+  deleted_at: Int
+  last_connected_at: Int
+}
+
+type PageInfo {
+  count: Int
+  pages: Int
+  next: Int
+  prev: Int
+}
+
+type Users {
+  results: [User]
+  pageInfo: PageInfo
+}
+
+type Query {
+  users(filters: String, pageSize: Int, page: Int): Users!
+}
+
+# type Edge {
+#    node: User
+#    cursor: String
+# }
+
+# type PageInfo {
+#   startCursor: String
+#   endCursor: String
+#   hasNextPage: Boolean
+#   hasPrevPage: Boolean
+# }
+
+# type Users {
+#   totalCount: Int
+#   edges: [Edge]
+#   pageInfo: PageInfo
+# }
+
+enum sortOrder {
+  ASC
+  DESC
+}
+
+# type Query {
+#   users(first: Int!, afterCursor: String, filters: String): Users!
+# }
+
+type Query {
+  getUser(id: Int!): User
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+}
+
+type Mutation {
+  resetPassword(input: ResetPasswordInput!): Status!
+}
+
+type Mutation {
+  forgotPassword(email: String!): Status!
+}
+
+type Mutation {
+  deleteUser(id: Int!): Status!
+}
+
+type Mutation {
+  updateUser(id: Int!, input: UpdateUserInput): Status!
+}
+
+input ResetPasswordInput {
+  password: String!
+  token: String!
+}
+
+type Status {
+  success: Boolean
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  email: String
+  first_name: String
+  last_name: String
+  username: String
+}

@@ -1,0 +1,22 @@
+overwrite: true
+schema: ./src/**/*.graphql
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript
+      - typescript-resolvers
+    config:
+      maybeValue: T | null | undefined
+      useIndexSignature: true
+      contextType: ./src/interfaces/schema-definition/types#Context
+      scalars:
+        Date: string
+
+  .graphql/schema.graphql:
+    config:
+      includeDirectives: true
+      commentDescriptions: true
+    plugins:
+      - 'schema-ast'
