@@ -18,7 +18,7 @@ export default ({ jwt }: { jwt: any }) => {
 
       // console.log('authorization query query query query query', query);
 
-      if (
+    /*  if (
         query?.includes('resetPassword') ||
         query?.includes('forgotPassword') ||
         query?.includes('signin') ||
@@ -55,7 +55,7 @@ export default ({ jwt }: { jwt: any }) => {
         return null;
       }
 
-      throw new Error('No token provided.');
+      throw new Error('No token provided.');*/
     },
   };
 };
