@@ -11,7 +11,8 @@ export default ({ repository: { usersRepository }, response: { Fail }, jwt }: an
   const bearerStrategy: any = new BearerStrategy(
     'bearer',
     (token: string, done: (arg0: any, arg1: { email: string; password: string } | null) => any) => {
-      const { id }: number = jwt.decode()(token);
+      console.log('------------- BearerStrategy ------------', token);
+       const { id }: number = jwt.decode()(token);
 
       console.log('bearerStrategy', {
         id,
@@ -38,7 +39,9 @@ export default ({ repository: { usersRepository }, response: { Fail }, jwt }: an
       passport.authenticate('bearer', { session: false }, (err: string, _: any) => {
         console.log('passport.authenticate', err);
 
-        if (err === Status[Status.NOT_FOUND]) {
+        console.log('------------- authenticate ------------');
+
+        /* if (err === Status[Status.NOT_FOUND]) {
           return res.status(Status.NOT_FOUND).json(Fail({ message: Status[Status.NOT_FOUND] }));
         }
 
@@ -47,6 +50,7 @@ export default ({ repository: { usersRepository }, response: { Fail }, jwt }: an
         }
 
         next();
+        */
       })(req, res, next),
     initialize: () => passport.initialize(),
   };

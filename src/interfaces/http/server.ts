@@ -63,13 +63,15 @@ export default ({ config, logger, auth, schema, verify }: any) => {
 
           await fastify.register(rateLimit);
 
-          const myContextFunction: ApolloFastifyContextFunction<MyContext> = async (request, reply) => ({
-            authorization: auth.authenticate,
-            verify,
-          });
+          const myContextFunction: ApolloFastifyContextFunction<MyContext> = async (request, reply) => {
+            return {
+              //authorization: auth.authenticate,
+              //verify,
+            }
+          };
 
           await fastify.register(fastifyApollo(apolloServer), {
-            context: myContextFunction,
+            context: auth.authenticate,
           });
 
           void fastify.register(auth.initialize());

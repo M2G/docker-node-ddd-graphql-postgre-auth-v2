@@ -10,12 +10,13 @@ const TOKEN_EXPIRED_ERROR = 'TokenExpiredError';
 
 export default ({ jwt }: { jwt: any }) => {
   return {
-    authorization: ({ req }: { req: Request }) => {
-      const {
+    authorization: ({ ...req }: { req: Request }) => {
+      console.log('------------- verify ------------', req)
+     /* const {
         headers: { authorization },
         body: { query },
       } = req;
-
+*/
       // console.log('authorization query query query query query', query);
 
     /*  if (
