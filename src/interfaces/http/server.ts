@@ -1,7 +1,7 @@
 import { ApolloServer } from '@apollo/server';
-import rateLimit from "@fastify/rate-limit";
+import rateLimit from '@fastify/rate-limit';
 import Fastify from 'fastify';
-import cors from "@fastify/cors";
+import cors from '@fastify/cors';
 import fastifyApollo, {
   ApolloFastifyContextFunction,
   fastifyApolloDrainPlugin,
@@ -52,29 +52,26 @@ export default ({ config, logger, auth, schema, verify }: any) => {
   return {
     server: apolloServer,
     serverStandalone:
-      process.env.NODE_ENV === 'test'
-      && startStandaloneServer(apolloServer, { listen: config.port }),
+      process.env.NODE_ENV === 'test' &&
+      startStandaloneServer(apolloServer, { listen: config.port }),
     fastify,
     start: async (): Promise<unknown> =>
       new Promise(async () => {
-
         try {
           await apolloServer.start();
 
           await fastify.register(rateLimit);
 
-          const myContextFunction: ApolloFastifyContextFunction<MyContext> = async (request, reply) => {
-            return {
-              //authorization: auth.authenticate,
-              //verify,
-            }
-          };
+          void fastify.register(auth.initialize());
 
-          await fastify.register(fastifyApollo(apolloServer), {
-            context: auth.authenticate,
+          fastify.route({
+            url: '/graphql',
+            method: ['POST', 'OPTIONS'],
+            handler: fastifyApollo(apolloServer),
+            preHandler: auth.authenticate,
+            preValidation: verify.authorization,
           });
 
-          void fastify.register(auth.initialize());
 
           await fastify.listen({ host: '0.0.0.0', port: config.port });
 
