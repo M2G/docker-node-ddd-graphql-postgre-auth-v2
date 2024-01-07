@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import BearerStrategy from 'passport-http-bearer';
 import Status from 'http-status';
+import { FastifyReply, FastifyRequest } from 'fastify';
 
 /**
  * middleware to check the if auth vaid
@@ -35,13 +36,13 @@ export default ({ repository: { usersRepository }, response: { Fail }, jwt }: an
   passport.deserializeUser((user, done) => done(null, user as any));
 
   return {
-    authenticate: (req: Request, res: Response, next: NextFunction) =>
+    authenticate: (request: FastifyRequest, reply: FastifyReply, done) =>
       passport.authenticate('bearer', { session: false }, (err: string, _: any) => {
         console.log('passport.authenticate', err);
 
         console.log('------------- authenticate ------------');
 
-        /* if (err === Status[Status.NOT_FOUND]) {
+         /*if (err === Status[Status.NOT_FOUND]) {
           return res.status(Status.NOT_FOUND).json(Fail({ message: Status[Status.NOT_FOUND] }));
         }
 
@@ -51,7 +52,10 @@ export default ({ repository: { usersRepository }, response: { Fail }, jwt }: an
 
         next();
         */
-      })(req, res, next),
+
+        console.log('------------- next ------------', done);
+        done();
+      })(request, reply, done),
     initialize: () => passport.initialize(),
   };
 };

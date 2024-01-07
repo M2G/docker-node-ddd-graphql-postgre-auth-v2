@@ -68,10 +68,18 @@ export default ({ config, logger, auth, schema, verify }: any) => {
             url: '/graphql',
             method: ['POST', 'OPTIONS'],
             handler: fastifyApollo(apolloServer),
-            preHandler: auth.authenticate,
-            preValidation: verify.authorization,
+            preHandler: (request, reply, done) => {
+              console.log('ok')
+              done();
+             //return auth.authenticate(request, reply, done)
+            },
+            //@TODO why doesnt work
+            preValidation: (request, reply, done) => {
+              console.log('ok2')
+              done();
+              //return verify.authorization(request, reply, done)
+            },
           });
-
 
           await fastify.listen({ host: '0.0.0.0', port: config.port });
 
